@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: governance-consumer-rules
+  cloud:
+    vault:
+      token: s.Gs4dQABWxYG6oL1i09WrpK95
+    config:
+      import-check:
+        enabled: false
+    consul:
+      config:
+        enabled: false
+  elasticsearch:
+    rest:
+      uris: https://localhost:9200
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/local
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  kafka:
+    bootstrap-servers: localhost:9092
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: env, health, info, loggers, httptrace
+logging:
+  level:
+    br.com.cvc.governanceconsumerrules: INFO
+
+elasticsearch:
+  host: https://localhost:9200
+
+rabbitmq:
+  queue:
+    rules:
+      name: opportunities.governance.rules
+    buckets:
+      name: opportunities.governance.buckets
+      dlq: opportunities.governance.buckets.dlq
+      exchange: opportunities.governance.buckets.exchange
+      routingKey: opportunities.governance.buckets.routingKey
+      maxAttempts: 3
+      startInterval: 1000
+      multiplier: 2.0
+      maxInterval: 10000
+
+feign:
+  client:
+    normalizador:
+      url: http://localhost:1000/
